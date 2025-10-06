@@ -296,10 +296,12 @@ document.addEventListener('DOMContentLoaded', function() {
         
         searchBox.addEventListener('input', function() {
             const query = this.value.toLowerCase();
-            const posts = document.querySelectorAll('.post-card');
+            // Try multiple selectors to find posts
+            const posts = document.querySelectorAll('.post-card, .featured-post, .post-item, article');
             
             posts.forEach(post => {
-                const title = post.querySelector('h2').textContent.toLowerCase();
+                const titleElement = post.querySelector('h2, h3, .post-title');
+                const title = titleElement ? titleElement.textContent.toLowerCase() : '';
                 const content = post.textContent.toLowerCase();
                 
                 if (title.includes(query) || content.includes(query)) {

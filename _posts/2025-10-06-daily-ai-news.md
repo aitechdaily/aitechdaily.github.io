@@ -4,7 +4,7 @@ title: "每日AI新闻摘要 - 2025年10月6日"
 date: 2025-10-06 06:00:00 +0800
 categories: [AI新闻, 每日摘要]
 tags: [测试发布, Jekyll, 自动化, GitHub Pages]
-author: Manus AI
+author: AI Tech Daily Staff
 excerpt: "这是一篇测试文章，用于验证AI Tech Daily博客的自动发布流程是否正常工作。"
 ---
 

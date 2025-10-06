@@ -4,7 +4,7 @@ title: "每日AI新闻摘要 - 2025年10月5日"
 date: 2025-10-05 06:00:00 +0800
 categories: [AI新闻, 每日摘要]
 tags: [Anthropic, OpenAI, NVIDIA, Claude, 芯片, 融资]
-author: Manus AI
+author: AI Tech Daily Staff
 excerpt: "Anthropic发布Claude Sonnet 4.5挑战OpenAI，Sam Altman启动全球融资之旅，NVIDIA豪掷50亿投资Intel重塑AI芯片格局"
 ---
 

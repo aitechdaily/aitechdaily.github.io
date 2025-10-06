@@ -923,3 +923,36 @@ select:focus {
     justify-content: center;
     height: 100%;
 }
+
+
+/* Mobile/Desktop visibility controls */
+.mobile-only {
+    display: none;
+}
+
+.desktop-only {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .mobile-only {
+        display: block;
+    }
+    
+    .desktop-only {
+        display: none;
+    }
+    
+    .post-tags.mobile-only {
+        margin-top: 2rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border-color);
+    }
+    
+    .post-tags.mobile-only h4 {
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+}

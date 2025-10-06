@@ -12,12 +12,14 @@ layout: default
             {% if page.author %}
             <span class="post-author">by {{ page.author }}</span>
             {% endif %}
+        </div>
+        
+        <!-- Mobile: Show tags after content -->
+        <div class="post-tags desktop-only">
             {% if page.tags.size > 0 %}
-            <div class="post-tags">
-                {% for tag in page.tags %}
-                <span class="tag">{{ tag }}</span>
-                {% endfor %}
-            </div>
+            {% for tag in page.tags %}
+            <span class="tag">{{ tag }}</span>
+            {% endfor %}
             {% endif %}
         </div>
     </header>
@@ -103,7 +105,17 @@ layout: default
                 <a href="mailto:?subject={{ page.title | uri_escape }}&body={{ page.url | absolute_url | uri_escape }}" class="share-email">Email</a>
             </div>
         </div>
-    </footer>
+      </div>
+    
+    <!-- Mobile: Show tags after content -->
+    <div class="post-tags mobile-only">
+        {% if page.tags.size > 0 %}
+        <h4>标签</h4>
+        {% for tag in page.tags %}
+        <span class="tag">{{ tag }}</span>
+        {% endfor %}
+        {% endif %}
+    </div>
 </article>
 
 <!-- Related Posts -->

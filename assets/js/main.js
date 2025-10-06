@@ -393,6 +393,314 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+// Infinite scroll and pagination for home page
+document.addEventListener('DOMContentLoaded', function() {
+    if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+        initializeHomePage();
+    }
+    
+    // Date navigation for post pages
+    if (document.getElementById('year-selector')) {
+        initializeDateNavigation();
+    }
+    
+    // Tag page infinite scroll
+    if (document.getElementById('tag-posts-data')) {
+        initializeTagPage();
+    }
+});
+
+function initializeHomePage() {
+    const postsDataElement = document.getElementById('posts-data');
+    if (!postsDataElement) return;
+    
+    let allPosts = [];
+    try {
+        allPosts = JSON.parse(postsDataElement.textContent);
+    } catch (e) {
+        console.error('Failed to parse posts data:', e);
+        return;
+    }
+    
+    const articlesGrid = document.getElementById('articles-grid');
+    const loadMoreBtn = document.getElementById('load-more-btn');
+    const loadingIndicator = document.getElementById('loading-indicator');
+    const loadMoreContainer = document.getElementById('load-more-container');
+    
+    let currentPage = 0;
+    const postsPerPage = 12;
+    
+    function createArticleCard(post) {
+        const tagLinks = post.tags.map(tag => {
+            const tagSlug = tag.toLowerCase()
+                .replace(/\s+/g, '-')
+                .replace('三星', '三星')
+                .replace('AI代理', 'ai代理')
+                .replace('AI技术', 'ai技术')
+                .replace('ASI', 'asi')
+                .replace('Anthropic', 'anthropic')
+                .replace('Claude', 'claude')
+                .replace('Gemini', 'gemini')
+                .replace('GitHub Pages', 'github-pages')
+                .replace('Google', 'google')
+                .replace('Jekyll', 'jekyll')
+                .replace('Manus', 'manus')
+                .replace('NVIDIA', 'nvidia')
+                .replace('OpenAI', 'openai')
+                .replace('Sora', 'sora')
+                .replace('人工智能', '人工智能')
+                .replace('商业化', '商业化')
+                .replace('多模态', '多模态')
+                .replace('测试发布', '测试发布')
+                .replace('科技新闻', '科技新闻')
+                .replace('自动化', '自动化')
+                .replace('芯片', '芯片')
+                .replace('芯片政策', '芯片政策')
+                .replace('融资', '融资')
+                .replace('行业动态', '行业动态')
+                .replace('阿里巴巴', '阿里巴巴');
+            return `<a href="/tags/${tagSlug}/" class="tag">${tag}</a>`;
+        }).join('');
+        
+        return `
+            <article class="article-card">
+                <div class="article-image">
+                    <img src="/assets/images/tag-${post.first_tag}.jpg" alt="${post.first_tag}" onerror="this.src='/assets/images/tag-人工智能.jpg'">
+                    <div class="article-date">
+                        <span class="day">${post.day}</span>
+                        <span class="month">${post.month}</span>
+                    </div>
+                </div>
+                <div class="article-content">
+                    <h2><a href="${post.url}">${post.title}</a></h2>
+                    <div class="article-meta">
+                        <time>${post.display_date}</time>
+                        <span class="author">${post.author}</span>
+                    </div>
+                    <div class="article-excerpt">
+                        ${post.description}
+                    </div>
+                    <div class="article-tags">
+                        ${tagLinks}
+                    </div>
+                </div>
+            </article>
+        `;
+    }
+    
+    function loadMorePosts() {
+        const startIndex = currentPage * postsPerPage;
+        const endIndex = startIndex + postsPerPage;
+        const postsToLoad = allPosts.slice(startIndex, endIndex);
+        
+        if (postsToLoad.length === 0) {
+            loadMoreContainer.style.display = 'none';
+            return;
+        }
+        
+        loadingIndicator.style.display = 'block';
+        loadMoreBtn.disabled = true;
+        
+        // Simulate loading delay
+        setTimeout(() => {
+            postsToLoad.forEach(post => {
+                articlesGrid.insertAdjacentHTML('beforeend', createArticleCard(post));
+            });
+            
+            currentPage++;
+            loadingIndicator.style.display = 'none';
+            loadMoreBtn.disabled = false;
+            
+            // Hide load more button if no more posts
+            if (endIndex >= allPosts.length) {
+                loadMoreContainer.style.display = 'none';
+            }
+        }, 800);
+    }
+    
+    // Load initial posts
+    loadMorePosts();
+    
+    // Load more button click
+    if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', loadMorePosts);
+    }
+    
+    // Infinite scroll
+    let isLoading = false;
+    window.addEventListener('scroll', () => {
+        if (isLoading) return;
+        
+        const scrollTop = window.pageYOffset;
+        const windowHeight = window.innerHeight;
+        const docHeight = document.documentElement.scrollHeight;
+        
+        if (scrollTop + windowHeight >= docHeight - 1000) {
+            if (currentPage * postsPerPage < allPosts.length) {
+                isLoading = true;
+                loadMorePosts();
+                setTimeout(() => { isLoading = false; }, 1000);
+            }
+        }
+    });
+}
+
+function initializeDateNavigation() {
+    const yearSelector = document.getElementById('year-selector');
+    const monthSelector = document.getElementById('month-selector');
+    const dateList = document.getElementById('date-list');
+    
+    // Get all posts data for date navigation
+    const allPosts = [];
+    
+    // This would be populated from Jekyll data in a real implementation
+    // For now, we'll use a simplified approach
+    
+    function updateDateList() {
+        const selectedYear = yearSelector.value;
+        const selectedMonth = monthSelector.value;
+        
+        if (!selectedYear || !selectedMonth) {
+            dateList.innerHTML = '<div class="date-item">请选择年份和月份</div>';
+            return;
+        }
+        
+        // In a real implementation, this would filter posts by date
+        // For now, show a placeholder
+        dateList.innerHTML = `
+            <div class="date-item">
+                <a href="/">正在加载 ${selectedYear}年${parseInt(selectedMonth)}月的文章...</a>
+            </div>
+        `;
+    }
+    
+    yearSelector.addEventListener('change', updateDateList);
+    monthSelector.addEventListener('change', updateDateList);
+}
+
+function initializeTagPage() {
+    const postsDataElement = document.getElementById('tag-posts-data');
+    if (!postsDataElement) return;
+    
+    let allPosts = [];
+    try {
+        allPosts = JSON.parse(postsDataElement.textContent);
+    } catch (e) {
+        console.error('Failed to parse tag posts data:', e);
+        return;
+    }
+    
+    const articlesGrid = document.getElementById('tag-articles-grid');
+    const loadMoreBtn = document.getElementById('load-more-btn');
+    const loadingIndicator = document.getElementById('loading-indicator');
+    const loadMoreContainer = document.getElementById('load-more-container');
+    
+    let currentPage = 0;
+    const postsPerPage = 9;
+    
+    function createTagArticleCard(post) {
+        const tagSpans = post.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+        
+        return `
+            <article class="article-card">
+                <div class="article-image">
+                    <img src="/assets/images/tag-${post.first_tag}.jpg" alt="${post.first_tag}" onerror="this.src='/assets/images/tag-人工智能.jpg'">
+                </div>
+                <div class="article-content">
+                    <h2><a href="${post.url}">${post.title}</a></h2>
+                    <div class="article-meta">
+                        <time>${post.display_date}</time>
+                        <span class="author">${post.author}</span>
+                    </div>
+                    <div class="article-excerpt">
+                        ${post.description}
+                    </div>
+                    <div class="article-tags">
+                        ${tagSpans}
+                    </div>
+                </div>
+            </article>
+        `;
+    }
+    
+    function loadMoreTagPosts() {
+        const startIndex = currentPage * postsPerPage;
+        const endIndex = startIndex + postsPerPage;
+        const postsToLoad = allPosts.slice(startIndex, endIndex);
+        
+        if (postsToLoad.length === 0) {
+            loadMoreContainer.style.display = 'none';
+            return;
+        }
+        
+        loadingIndicator.style.display = 'block';
+        loadMoreBtn.disabled = true;
+        
+        // Simulate loading delay
+        setTimeout(() => {
+            postsToLoad.forEach(post => {
+                articlesGrid.insertAdjacentHTML('beforeend', createTagArticleCard(post));
+            });
+            
+            currentPage++;
+            loadingIndicator.style.display = 'none';
+            loadMoreBtn.disabled = false;
+            
+            // Hide load more button if no more posts
+            if (endIndex >= allPosts.length) {
+                loadMoreContainer.style.display = 'none';
+            }
+        }, 600);
+    }
+    
+    // Load initial posts
+    loadMoreTagPosts();
+    
+    // Load more button click
+    if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', loadMoreTagPosts);
+    }
+    
+    // Infinite scroll
+    let isLoading = false;
+    window.addEventListener('scroll', () => {
+        if (isLoading) return;
+        
+        const scrollTop = window.pageYOffset;
+        const windowHeight = window.innerHeight;
+        const docHeight = document.documentElement.scrollHeight;
+        
+        if (scrollTop + windowHeight >= docHeight - 1000) {
+            if (currentPage * postsPerPage < allPosts.length) {
+                isLoading = true;
+                loadMoreTagPosts();
+                setTimeout(() => { isLoading = false; }, 800);
+            }
+        }
+    });
+}
+
+// Global function for date navigation
+function navigateToDate() {
+    const yearSelector = document.getElementById('year-selector');
+    const monthSelector = document.getElementById('month-selector');
+    const dateList = document.getElementById('date-list');
+    
+    const selectedYear = yearSelector.value;
+    const selectedMonth = monthSelector.value;
+    
+    if (selectedYear && selectedMonth) {
+        // Navigate to archive page or filter posts
+        const archiveUrl = `/?year=${selectedYear}&month=${selectedMonth}`;
+        // For now, just update the date list
+        dateList.innerHTML = `
+            <div class="date-item">
+                <a href="${archiveUrl}">查看 ${selectedYear}年${parseInt(selectedMonth)}月的所有文章</a>
+            </div>
+        `;
+    }
+}
+
 // Console message
 console.log(`
 🤖 AI Tech Daily - Powered by Manus AI

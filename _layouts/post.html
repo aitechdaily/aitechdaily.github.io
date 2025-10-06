@@ -33,15 +33,26 @@ layout: default
             </div>
             {% endif %}
             
-            <aside class="recent-posts">
-                <h4>最新文章</h4>
-                <ul>
-                    {% for post in site.posts limit: 5 %}
-                    {% unless post.url == page.url %}
-                    <li><a href="{{ post.url }}">{{ post.title }}</a></li>
-                    {% endunless %}
-                    {% endfor %}
-                </ul>
+            <aside class="date-navigator">
+                <h4>日期导航</h4>
+                <div class="date-selector">
+                    <select id="year-selector" onchange="navigateToDate()">
+                        <option value="">选择年份</option>
+                        {% assign years = site.posts | group_by_exp: "post", "post.date | date: '%Y'" %}
+                        {% for year in years %}
+                        <option value="{{ year.name }}">{{ year.name }}年</option>
+                        {% endfor %}
+                    </select>
+                    <select id="month-selector" onchange="navigateToDate()">
+                        <option value="">选择月份</option>
+                        {% for i in (1..12) %}
+                        <option value="{{ i | prepend: '0' | slice: -2, 2 }}">{{ i }}月</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="date-list" id="date-list">
+                    <!-- 动态加载日期列表 -->
+                </div>
             </aside>
         </div>
     </header>
@@ -154,33 +165,48 @@ layout: default
     box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
 }
 
-.recent-posts ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.recent-posts li {
+.date-navigator select {
+    width: 100%;
+    padding: 8px 12px;
     margin-bottom: 10px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #e9ecef;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    background: white;
+    font-size: 0.9rem;
+    color: #495057;
 }
 
-.recent-posts li:last-child {
+.date-list {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    background: white;
+}
+
+.date-item {
+    padding: 8px 12px;
+    border-bottom: 1px solid #f8f9fa;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: background-color 0.3s ease;
+}
+
+.date-item:hover {
+    background-color: #f8f9fa;
+}
+
+.date-item:last-child {
     border-bottom: none;
-    margin-bottom: 0;
-    padding-bottom: 0;
 }
 
-.recent-posts a {
+.date-item a {
     color: #495057;
     text-decoration: none;
-    font-size: 0.9rem;
-    line-height: 1.4;
-    transition: color 0.3s ease;
+    display: block;
 }
 
-.recent-posts a:hover {
+.date-item a:hover {
     color: #667eea;
 }
 

@@ -1,0 +1,17 @@
+# ads.txt file for aitechdaily.github.io
+# This file is used to authorize digital advertising sellers
+
+# Google AdSense (待填入实际Publisher ID)
+# google.com, pub-XXXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
+
+# Taboola (待填入实际Publisher ID)
+# taboola.com, XXXXXXXXX, DIRECT, 6c33edb13117fd86
+
+# Outbrain (待填入实际Publisher ID)  
+# outbrain.com, XXXXXXXXX, DIRECT, 0bfa8c9e8cd28e3c
+
+# Media.net (待填入实际Publisher ID)
+# media.net, XXXXXXXXX, DIRECT
+
+# 请在获得广告联盟批准后，将上述XXXXXXXXX替换为实际的Publisher ID
+# 并取消相应行的注释

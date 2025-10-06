@@ -9,13 +9,24 @@ url: "https://aitechdaily.github.io"
 twitter_username: aitechdaily
 github_username: aitechdaily
 
+# SEO and Analytics
+keywords: "AI新闻, 人工智能, 机器学习, 深度学习, AI技术, AI产业, OpenAI, Google, 科技新闻, AI投资, AI政策"
+google_analytics: ""  # GA4 Measurement ID (留空待填)
+google_adsense_id: ""  # AdSense Publisher ID (留空待填)
+google_site_verification: ""  # Google Search Console verification (留空待填)
+
+# Advertising networks (留空待填)
+taboola_publisher_id: ""  # Taboola Publisher ID
+outbrain_widget_id: ""    # Outbrain Widget ID
+media_net_site_id: ""     # Media.net Site ID
+
 # Build settings
 markdown: kramdown
-theme: minima
 plugins:
   - jekyll-feed
   - jekyll-sitemap
   - jekyll-seo-tag
+  - jekyll-paginate
 
 # Exclude from processing
 exclude:

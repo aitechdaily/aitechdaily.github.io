@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: 'zh-CN' }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <!-- SEO Meta Tags -->
+    <title>{% if page.title %}{{ page.title }} | {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
+    <meta name="description" content="{% if page.description %}{{ page.description }}{% elsif page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
+    <meta name="keywords" content="{% if page.tags %}{{ page.tags | join: ', ' }}{% endif %}{{ site.keywords }}">
+    <meta name="author" content="{% if page.author %}{{ page.author }}{% else %}{{ site.author }}{% endif %}">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ page.url | absolute_url }}">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="{% if page.layout == 'post' %}article{% else %}website{% endif %}">
+    <meta property="og:url" content="{{ page.url | absolute_url }}">
+    <meta property="og:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
+    <meta property="og:description" content="{% if page.description %}{{ page.description }}{% elsif page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
+    <meta property="og:image" content="{{ '/assets/images/og-image.jpg' | absolute_url }}">
+    <meta property="og:site_name" content="{{ site.title }}">
+    <meta property="og:locale" content="zh_CN">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ page.url | absolute_url }}">
+    <meta property="twitter:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
+    <meta property="twitter:description" content="{% if page.description %}{{ page.description }}{% elsif page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
+    <meta property="twitter:image" content="{{ '/assets/images/og-image.jpg' | absolute_url }}">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "{% if page.layout == 'post' %}Article{% else %}WebSite{% endif %}",
+        "headline": "{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}",
+        "description": "{% if page.description %}{{ page.description }}{% elsif page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}",
+        "url": "{{ page.url | absolute_url }}",
+        {% if page.layout == 'post' %}
+        "datePublished": "{{ page.date | date_to_xmlschema }}",
+        "dateModified": "{{ page.date | date_to_xmlschema }}",
+        "author": {
+            "@type": "Person",
+            "name": "{% if page.author %}{{ page.author }}{% else %}{{ site.author }}{% endif %}"
+        },
+        {% endif %}
+        "publisher": {
+            "@type": "Organization",
+            "name": "{{ site.title }}",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "{{ '/assets/images/logo.png' | absolute_url }}"
+            }
+        }
+    }
+    </script>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ '/favicon.ico' | relative_url }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ '/assets/images/apple-touch-icon.png' | relative_url }}">
+    
+    <!-- RSS Feed -->
+    <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ '/feed.xml' | relative_url }}">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Google AdSense -->
+    {% if site.google_adsense_id %}
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ site.google_adsense_id }}" crossorigin="anonymous"></script>
+    {% endif %}
+    
+    <!-- Taboola -->
+    {% if site.taboola_publisher_id %}
+    <script type="text/javascript">
+        window._taboola = window._taboola || [];
+        _taboola.push({article:'auto'});
+        !function (e, f, u, i) {
+            if (!document.getElementById(i)){
+                e.async = 1;
+                e.src = u;
+                e.id = i;
+                f.parentNode.insertBefore(e, f);
+            }
+        }(document.createElement('script'),
+        document.getElementsByTagName('script')[0],
+        '//cdn.taboola.com/libtrc/{{ site.taboola_publisher_id }}/loader.js',
+        'tb_loader_script');
+        if(window.performance && typeof window.performance.mark == 'function')
+            {window.performance.mark('tbl_ic');}
+    </script>
+    {% endif %}
+    
+    <!-- Google Translate -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'zh-CN',
+                includedLanguages: 'en,ja,ko,fr,de,es,ru,ar,pt,it,th,vi,id,ms,hi',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false,
+                multilanguagePage: true
+            }, 'google_translate_element');
+        }
+        
+        // Auto-detect browser language and show translate bar
+        function detectAndTranslate() {
+            const userLang = navigator.language || navigator.userLanguage;
+            const langCode = userLang.split('-')[0];
+            
+            // If not Chinese, show translate notification
+            if (langCode !== 'zh') {
+                setTimeout(function() {
+                    const translateBar = document.getElementById('translate-notification');
+                    if (translateBar) {
+                        translateBar.style.display = 'block';
+                    }
+                }, 2000);
+            }
+        }
+        
+        window.addEventListener('load', detectAndTranslate);
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    
+    <!-- Dark Mode Detection -->
+    <script>
+        // Check for saved theme preference or default to 'light' mode
+        const theme = localStorage.getItem('theme') || 
+                     (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        
+        if (theme === 'dark') {
+            document.documentElement.classList.add('dark-mode');
+        }
+    </script>
+</head>
+<body>
+    <!-- Translate Notification Bar -->
+    <div id="translate-notification" class="translate-notification" style="display: none;">
+        <div class="translate-content">
+            <span>🌐 This page is available in your language</span>
+            <button onclick="document.getElementById('google_translate_element').style.display='block'; this.parentElement.parentElement.style.display='none';" class="translate-btn">Translate</button>
+            <button onclick="this.parentElement.parentElement.style.display='none';" class="close-btn">×</button>
+        </div>
+    </div>
+
+    <header class="site-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="{{ '/' | relative_url }}">
+                        <h1>{{ site.title }}</h1>
+                    </a>
+                </div>
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="{{ '/' | relative_url }}">首页</a></li>
+                        <li><a href="{{ '/about' | relative_url }}">关于我们</a></li>
+                        <li><a href="{{ '/feed.xml' | relative_url }}">RSS</a></li>
+                    </ul>
+                </nav>
+                <div class="header-tools">
+                    <div id="google_translate_element" style="display: none;"></div>
+                    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+                        <span class="sun-icon">☀️</span>
+                        <span class="moon-icon">🌙</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Top Banner Ad -->
+    {% if site.google_adsense_id %}
+    <div class="ad-container top-ad">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="{{ site.google_adsense_id }}"
+             data-ad-slot=""
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+    {% endif %}
+
+    <main class="main-content">
+        <div class="container">
+            <div class="content-wrapper">
+                <div class="primary-content">
+                    {{ content }}
+                </div>
+                
+                <aside class="sidebar">
+                    <!-- Sidebar Ad -->
+                    {% if site.google_adsense_id %}
+                    <div class="ad-container sidebar-ad">
+                        <ins class="adsbygoogle"
+                             style="display:block"
+                             data-ad-client="{{ site.google_adsense_id }}"
+                             data-ad-slot=""
+                             data-ad-format="auto"
+                             data-full-width-responsive="true"></ins>
+                        <script>
+                             (adsbygoogle = window.adsbygoogle || []).push({});
+                        </script>
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Recent Posts -->
+                    <div class="widget">
+                        <h3>最新文章</h3>
+                        <ul class="recent-posts">
+                            {% for post in site.posts limit:5 %}
+                            <li>
+                                <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+                                <span class="post-date">{{ post.date | date: "%m月%d日" }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    
+                    <!-- Tags Cloud -->
+                    <div class="widget">
+                        <h3>热门标签</h3>
+                        <div class="tags-cloud">
+                            {% assign tags = site.tags | sort %}
+                            {% for tag in tags %}
+                            <a href="#" class="tag">{{ tag[0] }}</a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <!-- In-Article Ad (for post pages) -->
+    {% if page.layout == 'post' and site.google_adsense_id %}
+    <div class="ad-container in-article-ad">
+        <ins class="adsbygoogle"
+             style="display:block; text-align:center;"
+             data-ad-layout="in-article"
+             data-ad-format="fluid"
+             data-ad-client="{{ site.google_adsense_id }}"
+             data-ad-slot=""></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+    {% endif %}
+
+    <!-- Taboola Widget -->
+    {% if site.taboola_publisher_id and page.layout == 'post' %}
+    <div class="taboola-container">
+        <div id="taboola-below-article-thumbnails"></div>
+        <script type="text/javascript">
+            window._taboola = window._taboola || [];
+            _taboola.push({
+                mode: 'thumbnails-a',
+                container: 'taboola-below-article-thumbnails',
+                placement: 'Below Article Thumbnails',
+                target_type: 'mix'
+            });
+        </script>
+    </div>
+    {% endif %}
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h3>{{ site.title }}</h3>
+                    <p>{{ site.description }}</p>
+                </div>
+                <div class="footer-links">
+                    <h4>快速链接</h4>
+                    <ul>
+                        <li><a href="{{ '/' | relative_url }}">首页</a></li>
+                        <li><a href="{{ '/about' | relative_url }}">关于我们</a></li>
+                        <li><a href="{{ '/feed.xml' | relative_url }}">RSS订阅</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>联系我们</h4>
+                    <p>Email: <a href="mailto:{{ site.email }}">{{ site.email }}</a></p>
+                    <p>由 <a href="https://manus.im" target="_blank">Manus AI</a> 自动生成和维护</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; {{ 'now' | date: "%Y" }} {{ site.title }}. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bottom Ad -->
+    {% if site.google_adsense_id %}
+    <div class="ad-container bottom-ad">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="{{ site.google_adsense_id }}"
+             data-ad-slot=""
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+    {% endif %}
+
+    <!-- JavaScript -->
+    <script src="{{ '/assets/js/main.js' | relative_url }}"></script>
+    
+    <!-- Taboola Flush -->
+    {% if site.taboola_publisher_id %}
+    <script type="text/javascript">
+        window._taboola = window._taboola || [];
+        _taboola.push({flush: true});
+    </script>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,247 @@
+---
+layout: default
+---
+
+<div class="tag-page">
+    <!-- Tag Header with Image -->
+    <div class="tag-header">
+        {% assign tag_image = '/assets/images/tag-' | append: page.tag | append: '.jpg' %}
+        <img src="{{ tag_image }}" alt="{{ page.tag }}" class="tag-image" onerror="this.src='/assets/images/tag-人工智能.jpg'">
+        <div class="tag-header-content">
+            <h1>{{ page.tag }}</h1>
+            <p>关于 "{{ page.tag }}" 的所有文章</p>
+        </div>
+    </div>
+
+    <!-- Articles List -->
+    <div class="tag-articles">
+        {% assign posts = site.posts | where_exp: "post", "post.tags contains page.tag" %}
+        {% if posts.size > 0 %}
+            <div class="articles-grid">
+                {% for post in posts %}
+                <article class="article-card">
+                    {% assign first_tag = post.tags[0] %}
+                    {% assign article_image = '/assets/images/tag-' | append: first_tag | append: '.jpg' %}
+                    <div class="article-image">
+                        <img src="{{ article_image }}" alt="{{ first_tag }}" onerror="this.src='/assets/images/tag-人工智能.jpg'">
+                    </div>
+                    <div class="article-content">
+                        <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
+                        <div class="article-meta">
+                            <time>{{ post.date | date: "%Y年%m月%d日" }}</time>
+                            <span class="author">{{ post.author }}</span>
+                        </div>
+                        <div class="article-excerpt">
+                            {{ post.description | default: post.excerpt | strip_html | truncate: 150 }}
+                        </div>
+                        <div class="article-tags">
+                            {% for tag in post.tags limit: 3 %}
+                                <span class="tag">{{ tag }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-posts">
+                <p>暂无关于 "{{ page.tag }}" 的文章。</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+.tag-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.tag-header {
+    position: relative;
+    height: 300px;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 40px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+}
+
+.tag-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.tag-header-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    color: white;
+    padding: 40px 30px 30px;
+}
+
+.tag-header-content h1 {
+    font-size: 2.5rem;
+    margin: 0 0 10px 0;
+    font-weight: 700;
+}
+
+.tag-header-content p {
+    font-size: 1.1rem;
+    margin: 0;
+    opacity: 0.9;
+}
+
+.articles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 30px;
+}
+
+.article-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.article-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+}
+
+.article-image {
+    height: 200px;
+    overflow: hidden;
+}
+
+.article-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.article-card:hover .article-image img {
+    transform: scale(1.05);
+}
+
+.article-content {
+    padding: 25px;
+}
+
+.article-content h2 {
+    margin: 0 0 15px 0;
+    font-size: 1.3rem;
+    line-height: 1.4;
+}
+
+.article-content h2 a {
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.article-content h2 a:hover {
+    color: #007bff;
+}
+
+.article-meta {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.article-excerpt {
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.article-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.article-tags .tag {
+    background: #f0f8ff;
+    color: #007bff;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.no-posts {
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+    font-size: 1.1rem;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .article-card {
+        background: #2d3748;
+        color: #e2e8f0;
+    }
+    
+    .article-content h2 a {
+        color: #e2e8f0;
+    }
+    
+    .article-content h2 a:hover {
+        color: #63b3ed;
+    }
+    
+    .article-meta {
+        color: #a0aec0;
+    }
+    
+    .article-excerpt {
+        color: #cbd5e0;
+    }
+    
+    .article-tags .tag {
+        background: #2b6cb0;
+        color: #bee3f8;
+    }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .tag-page {
+        padding: 15px;
+    }
+    
+    .tag-header {
+        height: 200px;
+        margin-bottom: 30px;
+    }
+    
+    .tag-header-content {
+        padding: 20px 20px 20px;
+    }
+    
+    .tag-header-content h1 {
+        font-size: 1.8rem;
+    }
+    
+    .articles-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .article-content {
+        padding: 20px;
+    }
+}
+</style>

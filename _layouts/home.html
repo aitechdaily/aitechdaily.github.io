@@ -2,243 +2,275 @@
 layout: default
 ---
 
-<div class="home-page">
-    <section class="hero-section">
-        <div class="hero-content">
-            {{ content }}
-        </div>
-    </section>
+<div class="home-content">
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <h1>AI Tech Daily</h1>
+        <p class="hero-subtitle">专业的人工智能行业资讯平台</p>
+        <p class="hero-description">每日搜集并分析全球AI领域的重要新闻，涵盖技术突破、产业发展、政策动向和市场趋势</p>
+    </div>
 
-    <section class="posts-section">
-        <h2>最新文章</h2>
-        
-        <!-- Featured Post -->
-        {% if site.posts.size > 0 %}
-        {% assign featured_post = site.posts.first %}
-        <article class="featured-post">
-            <h2><a href="{{ featured_post.url | relative_url }}">{{ featured_post.title }}</a></h2>
-            <div class="post-meta">
-                <time datetime="{{ featured_post.date | date_to_xmlschema }}">
-                    {{ featured_post.date | date: site.date_format }}
-                </time>
-                {% if featured_post.author %}
-                <span class="post-author">by {{ featured_post.author }}</span>
-                {% endif %}
-            </div>
-            {% if featured_post.description %}
-            <p class="post-excerpt">{{ featured_post.description }}</p>
-            {% elsif featured_post.excerpt %}
-            <p class="post-excerpt">{{ featured_post.excerpt | strip_html | truncate: 200 }}</p>
-            {% endif %}
-            <a href="{{ featured_post.url | relative_url }}" class="read-more">阅读全文 →</a>
-        </article>
-        {% endif %}
-
-        <!-- Recent Posts Grid -->
-        <div class="posts-grid">
-            {% for post in site.posts offset:1 limit:9 %}
-            <article class="post-card">
-                <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
-                <div class="post-meta">
-                    <time datetime="{{ post.date | date_to_xmlschema }}">
-                        {{ post.date | date: "%m月%d日" }}
-                    </time>
-                    {% if post.tags.size > 0 %}
-                    <div class="post-tags">
-                        {% for tag in post.tags limit:3 %}
-                        <span class="tag">{{ tag }}</span>
+    <!-- Articles Grid -->
+    <div class="articles-section">
+        <div class="articles-grid">
+            {% for post in site.posts %}
+            <article class="article-card">
+                {% assign first_tag = post.tags[0] | default: "人工智能" %}
+                {% assign article_image = '/assets/images/tag-' | append: first_tag | append: '.jpg' %}
+                <div class="article-image">
+                    <img src="{{ article_image }}" alt="{{ first_tag }}" onerror="this.src='/assets/images/tag-人工智能.jpg'">
+                    <div class="article-date">
+                        <span class="day">{{ post.date | date: "%d" }}</span>
+                        <span class="month">{{ post.date | date: "%m月" }}</span>
+                    </div>
+                </div>
+                <div class="article-content">
+                    <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
+                    <div class="article-meta">
+                        <time>{{ post.date | date: "%Y年%m月%d日" }}</time>
+                        <span class="author">{{ post.author }}</span>
+                    </div>
+                    <div class="article-excerpt">
+                        {{ post.description | default: post.excerpt | strip_html | truncate: 120 }}
+                    </div>
+                    <div class="article-tags">
+                        {% for tag in post.tags limit: 3 %}
+                            <a href="/tags/{{ tag | downcase | replace: ' ', '-' | replace: '三星', '三星' | replace: 'AI代理', 'ai代理' | replace: 'AI技术', 'ai技术' | replace: 'ASI', 'asi' | replace: 'Anthropic', 'anthropic' | replace: 'Claude', 'claude' | replace: 'Gemini', 'gemini' | replace: 'GitHub Pages', 'github-pages' | replace: 'Google', 'google' | replace: 'Jekyll', 'jekyll' | replace: 'Manus', 'manus' | replace: 'NVIDIA', 'nvidia' | replace: 'OpenAI', 'openai' | replace: 'Sora', 'sora' | replace: '人工智能', '人工智能' | replace: '商业化', '商业化' | replace: '多模态', '多模态' | replace: '测试发布', '测试发布' | replace: '科技新闻', '科技新闻' | replace: '自动化', '自动化' | replace: '芯片', '芯片' | replace: '芯片政策', '芯片政策' | replace: '融资', '融资' | replace: '行业动态', '行业动态' | replace: '阿里巴巴', '阿里巴巴' }}/" class="tag">{{ tag }}</a>
                         {% endfor %}
                     </div>
-                    {% endif %}
                 </div>
-                {% if post.description %}
-                <p class="post-excerpt">{{ post.description | truncate: 120 }}</p>
-                {% elsif post.excerpt %}
-                <p class="post-excerpt">{{ post.excerpt | strip_html | truncate: 120 }}</p>
-                {% endif %}
             </article>
             {% endfor %}
         </div>
-
-        <!-- Pagination -->
-        {% if paginator %}
-        <nav class="pagination">
-            {% if paginator.previous_page %}
-            <a href="{{ paginator.previous_page_path | relative_url }}" class="pagination-prev">← 上一页</a>
-            {% endif %}
-            
-            <span class="pagination-info">
-                第 {{ paginator.page }} 页，共 {{ paginator.total_pages }} 页
-            </span>
-            
-            {% if paginator.next_page %}
-            <a href="{{ paginator.next_page_path | relative_url }}" class="pagination-next">下一页 →</a>
-            {% endif %}
-        </nav>
-        {% endif %}
-    </section>
+    </div>
 </div>
 
 <style>
+.home-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
 .hero-section {
-    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-    color: white;
-    padding: 3rem 0;
-    margin: -2rem -20px 3rem -20px;
     text-align: center;
+    padding: 60px 20px 80px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 20px;
+    color: white;
+    margin-bottom: 60px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
 }
 
-.hero-content h1 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+.hero-section h1 {
+    font-size: 3.5rem;
+    margin: 0 0 20px 0;
+    font-weight: 800;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
 }
 
-.hero-content p {
-    font-size: 1.125rem;
+.hero-subtitle {
+    font-size: 1.4rem;
+    margin: 0 0 15px 0;
+    opacity: 0.95;
+    font-weight: 500;
+}
+
+.hero-description {
+    font-size: 1.1rem;
+    margin: 0;
     opacity: 0.9;
     max-width: 600px;
     margin: 0 auto;
     line-height: 1.6;
 }
 
-.posts-section h2 {
-    font-size: 1.875rem;
-    font-weight: 700;
-    margin-bottom: 2rem;
-    color: var(--text-primary);
+.articles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 30px;
+}
+
+.article-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 6px 25px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.article-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+.article-image {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+}
+
+.article-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.article-card:hover .article-image img {
+    transform: scale(1.08);
+}
+
+.article-date {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 8px 12px;
     text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
-.featured-post {
-    background: var(--bg-secondary);
-    border-radius: var(--border-radius);
-    padding: 2rem;
-    margin-bottom: 3rem;
-    box-shadow: var(--shadow-medium);
-    border: 1px solid var(--border-color);
-    border-left: 4px solid var(--primary-color);
+.article-date .day {
+    display: block;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #333;
+    line-height: 1;
 }
 
-.featured-post h2 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
+.article-date .month {
+    display: block;
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 2px;
+}
+
+.article-content {
+    padding: 30px;
+}
+
+.article-content h2 {
+    margin: 0 0 15px 0;
+    font-size: 1.4rem;
     line-height: 1.4;
+    font-weight: 600;
 }
 
-.featured-post h2 a {
-    color: var(--text-primary);
+.article-content h2 a {
+    color: #2d3748;
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
-.featured-post h2 a:hover {
-    color: var(--primary-color);
+.article-content h2 a:hover {
+    color: #667eea;
 }
 
-.featured-post .post-excerpt {
-    font-size: 1rem;
-    line-height: 1.6;
-    color: var(--text-secondary);
-    margin: 1rem 0;
-}
-
-.read-more {
-    display: inline-block;
-    background: var(--primary-color);
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    text-decoration: none;
-    font-weight: 500;
-    transition: all 0.3s ease;
-}
-
-.read-more:hover {
-    background: var(--accent-color);
-    transform: translateY(-1px);
-}
-
-.posts-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 3rem;
-}
-
-.post-card h3 {
-    font-size: 1.125rem;
-    font-weight: 600;
-    margin-bottom: 0.75rem;
-    line-height: 1.4;
-}
-
-.post-card .post-excerpt {
-    font-size: 0.875rem;
-    color: var(--text-secondary);
-    line-height: 1.5;
-    margin-top: 0.75rem;
-}
-
-.pagination {
+.article-meta {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 2rem 0;
-    border-top: 1px solid var(--border-color);
+    gap: 15px;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    color: #718096;
 }
 
-.pagination-prev,
-.pagination-next {
-    background: var(--primary-color);
+.article-excerpt {
+    color: #4a5568;
+    line-height: 1.7;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+}
+
+.article-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.article-tags .tag {
+    background: linear-gradient(135deg, #667eea, #764ba2);
     color: white;
-    padding: 0.75rem 1.5rem;
-    border-radius: var(--border-radius);
-    text-decoration: none;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.8rem;
     font-weight: 500;
+    text-decoration: none;
     transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
 }
 
-.pagination-prev:hover,
-.pagination-next:hover {
-    background: var(--accent-color);
-    transform: translateY(-1px);
+.article-tags .tag:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
 }
 
-.pagination-info {
-    color: var(--text-secondary);
-    font-size: 0.875rem;
-}
-
-@media (max-width: 768px) {
-    .hero-content h1 {
-        font-size: 2rem;
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .article-card {
+        background: #2d3748;
+        border-color: #4a5568;
     }
     
-    .hero-content p {
-        font-size: 1rem;
+    .article-content h2 a {
+        color: #e2e8f0;
+    }
+    
+    .article-content h2 a:hover {
+        color: #90cdf4;
+    }
+    
+    .article-meta {
+        color: #a0aec0;
+    }
+    
+    .article-excerpt {
+        color: #cbd5e0;
+    }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .home-content {
+        padding: 15px;
     }
     
     .hero-section {
-        margin: -2rem -15px 2rem -15px;
-        padding: 2rem 0;
+        padding: 40px 20px 50px;
+        margin-bottom: 40px;
     }
     
-    .featured-post {
-        padding: 1.5rem;
+    .hero-section h1 {
+        font-size: 2.5rem;
     }
     
-    .posts-grid {
+    .hero-subtitle {
+        font-size: 1.2rem;
+    }
+    
+    .hero-description {
+        font-size: 1rem;
+    }
+    
+    .articles-grid {
         grid-template-columns: 1fr;
-        gap: 1rem;
+        gap: 25px;
     }
     
-    .pagination {
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
+    .article-image {
+        height: 180px;
+    }
+    
+    .article-content {
+        padding: 25px;
+    }
+    
+    .article-content h2 {
+        font-size: 1.2rem;
     }
 }
 </style>

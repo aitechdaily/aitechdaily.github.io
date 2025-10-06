@@ -3,132 +3,342 @@ layout: default
 ---
 
 <article class="post">
+    <!-- Article Header with Image -->
     <header class="post-header">
-        <h1 class="post-title">{{ page.title }}</h1>
-        <div class="post-meta">
-            <time class="post-date" datetime="{{ page.date | date_to_xmlschema }}">
-                {{ page.date | date: "%Y年%m月%d日" }}
-            </time>
-            {% if page.author %}
-            <span class="post-author">by {{ page.author }}</span>
-            {% endif %}
+        {% assign first_tag = page.tags[0] | default: "人工智能" %}
+        {% assign article_image = '/assets/images/tag-' | append: first_tag | append: '.jpg' %}
+        <div class="post-image">
+            <img src="{{ article_image }}" alt="{{ first_tag }}" onerror="this.src='/assets/images/tag-人工智能.jpg'">
+            <div class="post-image-overlay">
+                <h1 class="post-title">{{ page.title }}</h1>
+                <div class="post-meta">
+                    <time datetime="{{ page.date | date_to_xmlschema }}">
+                        {{ page.date | date: "%Y年%m月%d日" }}
+                    </time>
+                    {% if page.author %}
+                    <span class="post-author">{{ page.author }}</span>
+                    {% endif %}
+                </div>
+            </div>
         </div>
         
-        <!-- Mobile: Show tags after content -->
-        <div class="post-tags desktop-only">
+        <!-- Tags and Recent Posts (Desktop) -->
+        <div class="desktop-sidebar">
             {% if page.tags.size > 0 %}
-            {% for tag in page.tags %}
-            <span class="tag">{{ tag }}</span>
-            {% endfor %}
-            {% endif %}
-        </div>
-    </header>
-
-    <!-- Top of Article Ad -->
-    {% if site.google_adsense_id %}
-    <div class="ad-container post-top-ad">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="{{ site.google_adsense_id }}"
-             data-ad-slot=""
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>
-             (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    </div>
-    {% endif %}
-
-    <div class="post-content">
-        {{ content }}
-    </div>
-
-    <!-- Bottom of Article Ad -->
-    {% if site.google_adsense_id %}
-    <div class="ad-container post-bottom-ad">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="{{ site.google_adsense_id }}"
-             data-ad-slot=""
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>
-             (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    </div>
-    {% endif %}
-
-    <!-- Taboola Recommendations -->
-    {% if site.taboola_publisher_id %}
-    <div class="recommendations-section">
-        <h3>推荐阅读</h3>
-        <div id="taboola-below-article-thumbnails-2"></div>
-        <script type="text/javascript">
-            window._taboola = window._taboola || [];
-            _taboola.push({
-                mode: 'thumbnails-a',
-                container: 'taboola-below-article-thumbnails-2',
-                placement: 'Below Article Thumbnails 2',
-                target_type: 'mix'
-            });
-        </script>
-    </div>
-    {% endif %}
-
-    <footer class="post-footer">
-        <div class="post-navigation">
-            {% if page.previous.url %}
-            <div class="nav-previous">
-                <a href="{{ page.previous.url | relative_url }}" rel="prev">
-                    <span class="nav-label">← 上一篇</span>
-                    <span class="nav-title">{{ page.previous.title }}</span>
-                </a>
+            <div class="post-tags">
+                <h4>相关标签</h4>
+                {% for tag in page.tags %}
+                <a href="/tags/{{ tag | downcase | replace: ' ', '-' | replace: '三星', '三星' | replace: 'AI代理', 'ai代理' | replace: 'AI技术', 'ai技术' | replace: 'ASI', 'asi' | replace: 'Anthropic', 'anthropic' | replace: 'Claude', 'claude' | replace: 'Gemini', 'gemini' | replace: 'GitHub Pages', 'github-pages' | replace: 'Google', 'google' | replace: 'Jekyll', 'jekyll' | replace: 'Manus', 'manus' | replace: 'NVIDIA', 'nvidia' | replace: 'OpenAI', 'openai' | replace: 'Sora', 'sora' | replace: '人工智能', '人工智能' | replace: '商业化', '商业化' | replace: '多模态', '多模态' | replace: '测试发布', '测试发布' | replace: '科技新闻', '科技新闻' | replace: '自动化', '自动化' | replace: '芯片', '芯片' | replace: '芯片政策', '芯片政策' | replace: '融资', '融资' | replace: '行业动态', '行业动态' | replace: '阿里巴巴', '阿里巴巴' }}/" class="tag">{{ tag }}</a>
+                {% endfor %}
             </div>
             {% endif %}
             
-            {% if page.next.url %}
-            <div class="nav-next">
-                <a href="{{ page.next.url | relative_url }}" rel="next">
-                    <span class="nav-label">下一篇 →</span>
-                    <span class="nav-title">{{ page.next.title }}</span>
-                </a>
-            </div>
-            {% endif %}
+            <aside class="recent-posts">
+                <h4>最新文章</h4>
+                <ul>
+                    {% for post in site.posts limit: 5 %}
+                    {% unless post.url == page.url %}
+                    <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+                    {% endunless %}
+                    {% endfor %}
+                </ul>
+            </aside>
         </div>
+    </header>
 
-        <div class="post-share">
-            <h4>分享这篇文章</h4>
-            <div class="share-buttons">
-                <a href="https://twitter.com/intent/tweet?text={{ page.title | uri_escape }}&url={{ page.url | absolute_url | uri_escape }}" target="_blank" class="share-twitter">Twitter</a>
-                <a href="https://www.facebook.com/sharer/sharer.php?u={{ page.url | absolute_url | uri_escape }}" target="_blank" class="share-facebook">Facebook</a>
-                <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ page.url | absolute_url | uri_escape }}" target="_blank" class="share-linkedin">LinkedIn</a>
-                <a href="mailto:?subject={{ page.title | uri_escape }}&body={{ page.url | absolute_url | uri_escape }}" class="share-email">Email</a>
-            </div>
-        </div>
-      </div>
-    
-    <!-- Mobile: Show tags after content -->
-    <div class="post-tags mobile-only">
-        {% if page.tags.size > 0 %}
-        <h4>标签</h4>
-        {% for tag in page.tags %}
-        <span class="tag">{{ tag }}</span>
-        {% endfor %}
-        {% endif %}
+    <!-- Article Content -->
+    <div class="post-content">
+        {{ content }}
     </div>
+    
+    <!-- Tags (Mobile - Bottom) -->
+    {% if page.tags.size > 0 %}
+    <div class="mobile-tags">
+        <h4>相关标签</h4>
+        <div class="tags-list">
+            {% for tag in page.tags %}
+            <a href="/tags/{{ tag | downcase | replace: ' ', '-' | replace: '三星', '三星' | replace: 'AI代理', 'ai代理' | replace: 'AI技术', 'ai技术' | replace: 'ASI', 'asi' | replace: 'Anthropic', 'anthropic' | replace: 'Claude', 'claude' | replace: 'Gemini', 'gemini' | replace: 'GitHub Pages', 'github-pages' | replace: 'Google', 'google' | replace: 'Jekyll', 'jekyll' | replace: 'Manus', 'manus' | replace: 'NVIDIA', 'nvidia' | replace: 'OpenAI', 'openai' | replace: 'Sora', 'sora' | replace: '人工智能', '人工智能' | replace: '商业化', '商业化' | replace: '多模态', '多模态' | replace: '测试发布', '测试发布' | replace: '科技新闻', '科技新闻' | replace: '自动化', '自动化' | replace: '芯片', '芯片' | replace: '芯片政策', '芯片政策' | replace: '融资', '融资' | replace: '行业动态', '行业动态' | replace: '阿里巴巴', '阿里巴巴' }}/" class="tag">{{ tag }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
 </article>
 
-<!-- Related Posts -->
-<section class="related-posts">
-    <h3>相关文章</h3>
-    <div class="related-posts-grid">
-        {% assign related_posts = site.related_posts | limit: 3 %}
-        {% for post in related_posts %}
-        <article class="related-post">
-            <h4><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h4>
-            <time class="post-date">{{ post.date | date: "%m月%d日" }}</time>
-            <p>{{ post.excerpt | strip_html | truncate: 100 }}</p>
-        </article>
-        {% endfor %}
-    </div>
-</section>
+<style>
+.post {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.post-header {
+    position: relative;
+}
+
+.post-image {
+    position: relative;
+    height: 400px;
+    overflow: hidden;
+}
+
+.post-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.post-image-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    color: white;
+    padding: 60px 40px 40px;
+}
+
+.post-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 15px 0;
+    line-height: 1.2;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.post-meta {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+.desktop-sidebar {
+    display: flex;
+    gap: 40px;
+    padding: 30px 40px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.post-tags, .recent-posts {
+    flex: 1;
+}
+
+.post-tags h4, .recent-posts h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 15px 0;
+    color: #495057;
+}
+
+.post-tags .tag {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+    margin: 0 8px 8px 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.post-tags .tag:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.recent-posts ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.recent-posts li {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.recent-posts li:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.recent-posts a {
+    color: #495057;
+    text-decoration: none;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    transition: color 0.3s ease;
+}
+
+.recent-posts a:hover {
+    color: #667eea;
+}
+
+.post-content {
+    padding: 40px;
+    line-height: 1.8;
+    font-size: 1.05rem;
+    color: #333;
+}
+
+.post-content h1, .post-content h2, .post-content h3 {
+    color: #2d3748;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.post-content h2 {
+    font-size: 1.5rem;
+    border-bottom: 2px solid #667eea;
+    padding-bottom: 0.5rem;
+}
+
+.post-content h3 {
+    font-size: 1.3rem;
+    color: #4a5568;
+}
+
+.post-content p {
+    margin-bottom: 1.5rem;
+}
+
+.post-content ul, .post-content ol {
+    margin-bottom: 1.5rem;
+    padding-left: 2rem;
+}
+
+.post-content li {
+    margin-bottom: 0.5rem;
+}
+
+.mobile-tags {
+    display: none;
+    padding: 30px 40px;
+    background: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+}
+
+.mobile-tags h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 15px 0;
+    color: #495057;
+}
+
+.tags-list .tag {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    margin: 0 10px 10px 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.tags-list .tag:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .post {
+        background: #2d3748;
+        color: #e2e8f0;
+    }
+    
+    .desktop-sidebar, .mobile-tags {
+        background: #1a202c;
+        border-color: #4a5568;
+    }
+    
+    .post-tags h4, .recent-posts h4, .mobile-tags h4 {
+        color: #e2e8f0;
+    }
+    
+    .recent-posts a {
+        color: #cbd5e0;
+    }
+    
+    .recent-posts a:hover {
+        color: #90cdf4;
+    }
+    
+    .recent-posts li {
+        border-color: #4a5568;
+    }
+    
+    .post-content {
+        color: #e2e8f0;
+    }
+    
+    .post-content h1, .post-content h2, .post-content h3 {
+        color: #f7fafc;
+    }
+    
+    .post-content h3 {
+        color: #e2e8f0;
+    }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .post {
+        margin: 0;
+        border-radius: 0;
+    }
+    
+    .post-image {
+        height: 250px;
+    }
+    
+    .post-image-overlay {
+        padding: 30px 20px 25px;
+    }
+    
+    .post-title {
+        font-size: 1.8rem;
+    }
+    
+    .post-meta {
+        font-size: 0.9rem;
+    }
+    
+    .desktop-sidebar {
+        display: none;
+    }
+    
+    .post-content {
+        padding: 25px 20px;
+        font-size: 1rem;
+    }
+    
+    .post-content h2 {
+        font-size: 1.3rem;
+    }
+    
+    .post-content h3 {
+        font-size: 1.2rem;
+    }
+    
+    .mobile-tags {
+        display: block;
+        padding: 25px 20px;
+    }
+}
+</style>

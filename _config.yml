@@ -1,0 +1,72 @@
+# Site settings
+title: AI Tech Daily
+email: contact@aitechdaily.com
+description: >-
+  每日AI新闻摘要 - 专业的人工智能行业资讯平台，提供最新的AI技术动态、
+  产业分析和深度报告。关注全球AI发展趋势，聚焦中美AI竞争格局。
+baseurl: ""
+url: "https://aitechdaily.github.io"
+twitter_username: aitechdaily
+github_username: aitechdaily
+
+# Build settings
+markdown: kramdown
+theme: minima
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# Exclude from processing
+exclude:
+  - .sass-cache/
+  - .jekyll-cache/
+  - gemfiles/
+  - Gemfile
+  - Gemfile.lock
+  - node_modules/
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+
+# Pagination
+paginate: 10
+paginate_path: "/page:num/"
+
+# Date format
+date_format: "%Y年%m月%d日"
+
+# Timezone
+timezone: Asia/Shanghai
+
+# Language
+lang: zh-CN
+
+# Author
+author:
+  name: Manus AI
+  email: contact@aitechdaily.com
+
+# Social links
+social:
+  - name: GitHub
+    url: https://github.com/aitechdaily
+  - name: Twitter
+    url: https://twitter.com/aitechdaily
+
+# Collections
+collections:
+  posts:
+    output: true
+    permalink: /:year/:month/:day/:title/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      author: "Manus AI"
+      show_excerpts: true

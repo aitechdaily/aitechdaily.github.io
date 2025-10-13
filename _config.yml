@@ -15,12 +15,8 @@ google_analytics: ""  # GA4 Measurement ID (留空待填)
 google_adsense_id: "ca-pub-8114263350581000"  # AdSense Publisher ID (已配置)
 google_site_verification: ""  # Google Search Console verification (留空待填)
 
-# 中国大陆可用的广告联盟 (留空待填)
-baidu_union_id: ""        # 百度联盟 - 中国最大的广告联盟
-tencent_gdt_id: ""        # 腾讯广点通 - 微信、QQ生态广告  
-bytedance_union_id: ""    # 字节跳动穿山甲 - 今日头条、抖音生态
-sogou_union_id: ""        # 搜狗联盟 - 搜索广告
-qihu360_union_id: ""      # 360联盟 - 360生态广告
+# 广告配置 - 统一使用Google AdSense
+# 其他广告联盟配置已移除，专注使用AdSense获得最佳收益
 
 # Build settings
 markdown: kramdown

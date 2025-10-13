@@ -1,0 +1,167 @@
+/* AdSense 广告位样式 */
+
+/* 通用广告容器样式 */
+.ad-container {
+    margin: 30px 0;
+    text-align: center;
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    border: 1px solid #e9ecef;
+}
+
+.ad-container::before {
+    content: "广告";
+    display: block;
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* 顶部横幅广告 */
+.header-ad {
+    margin: 20px 0;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border: none;
+    color: white;
+}
+
+.header-ad::before {
+    color: rgba(255,255,255,0.8);
+}
+
+/* 侧边栏广告 */
+.sidebar-ad {
+    margin: 20px 0;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* 文章内广告 */
+.in-article-ad {
+    margin: 40px 0;
+    background: #fff;
+    border: 2px dashed #dee2e6;
+    border-radius: 12px;
+}
+
+/* 文章底部广告 */
+.below-article-ad {
+    margin: 40px 0 20px 0;
+    background: #f1f3f4;
+}
+
+/* 推荐内容广告 */
+.recommendation-ad {
+    margin: 30px 0;
+    background: white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-radius: 12px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .ad-container {
+        margin: 20px 0;
+        padding: 15px;
+        border-radius: 6px;
+    }
+    
+    .header-ad {
+        margin: 15px 0;
+    }
+    
+    .in-article-ad {
+        margin: 30px 0;
+    }
+    
+    .below-article-ad {
+        margin: 30px 0 15px 0;
+    }
+}
+
+/* 深色模式适配 */
+[data-theme="dark"] .ad-container {
+    background: #2d3748;
+    border-color: #4a5568;
+}
+
+[data-theme="dark"] .ad-container::before {
+    color: #a0aec0;
+}
+
+[data-theme="dark"] .sidebar-ad {
+    background: #2d3748;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+[data-theme="dark"] .recommendation-ad {
+    background: #2d3748;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+[data-theme="dark"] .in-article-ad {
+    background: #2d3748;
+    border-color: #4a5568;
+}
+
+[data-theme="dark"] .below-article-ad {
+    background: #1a202c;
+}
+
+/* AdSense 自适应单元样式 */
+.adsbygoogle {
+    display: block !important;
+    margin: 0 auto;
+}
+
+/* 确保广告在移动设备上正确显示 */
+@media (max-width: 480px) {
+    .adsbygoogle {
+        max-width: 100%;
+        overflow: hidden;
+    }
+}
+
+/* 加载状态样式 */
+.ad-container.loading {
+    background: #f8f9fa;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ad-container.loading::before {
+    content: "广告加载中...";
+    color: #6c757d;
+}
+
+/* 广告位标识 */
+.ad-label {
+    font-size: 0.75rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* 首页广告位特殊样式 */
+.home-content .ad-container {
+    max-width: 728px;
+    margin: 40px auto;
+}
+
+/* 文章页面广告位布局 */
+.post-content .ad-container {
+    max-width: 100%;
+    margin: 35px 0;
+}
+
+/* 确保广告不影响页面布局 */
+.ad-container ins {
+    text-decoration: none !important;
+}

@@ -65,6 +65,7 @@
     
     <!-- CSS -->
     <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/ad-styles.css' | relative_url }}">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -76,41 +77,7 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ site.google_adsense_id }}" crossorigin="anonymous"></script>
     {% endif %}
     
-    <!-- 百度联盟 -->
-    {% if site.baidu_union_id %}
-    <script>
-        (function() {
-            var bp = document.createElement('script');
-            var curProtocol = window.location.protocol.split(':')[0];
-            if (curProtocol === 'https') {
-                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
-            } else {
-                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-            }
-            var s = document.getElementsByTagName("script")[0];
-            s.parentNode.insertBefore(bp, s);
-        })();
-    </script>
-    {% endif %}
-    
-    <!-- 腾讯广点通 -->
-    {% if site.tencent_gdt_id %}
-    <script>
-        (function(w, d, s, l, i) {
-            w[l] = w[l] || [];
-            w[l].push({
-                'gtm.start': new Date().getTime(),
-                event: 'gtm.js'
-            });
-            var f = d.getElementsByTagName(s)[0],
-                j = d.createElement(s),
-                dl = l != 'dataLayer' ? '&l=' + l : '';
-            j.async = true;
-            j.src = 'https://e.qq.com/ads/js/te.js?site_id={{ site.tencent_gdt_id }}';
-            f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'dataLayer');
-    </script>
-    {% endif %}
+    <!-- 专注使用Google AdSense获得最佳收益 -->
     
     <!-- Google Translate -->
     <script type="text/javascript">
@@ -272,45 +239,33 @@
     </div>
     {% endif %}
 
-    <!-- 百度联盟广告位 -->
-    {% if site.baidu_union_id and page.layout == 'post' %}
-    <div class="baidu-ad-container">
-        <div id="baidu-below-article-ad">
-            <!-- 百度联盟广告代码将在这里插入 -->
-            <script type="text/javascript">
-                // 百度联盟广告代码
-                (function() {
-                    var s = "_" + Math.random().toString(36).slice(2);
-                    document.write('<div id="' + s + '"></div>');
-                    (window.slotbydup=window.slotbydup || []).push({
-                        id: '{{ site.baidu_union_id }}',
-                        container: s,
-                        size: '728,90',
-                        display: 'inlay-fix'
-                    });
-                })();
-            </script>
-        </div>
+    <!-- AdSense 文章底部广告位 -->
+    {% if site.google_adsense_id and page.layout == 'post' %}
+    <div class="ad-container below-article-ad">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="{{ site.google_adsense_id }}"
+             data-ad-slot=""
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
     </div>
     {% endif %}
     
-    <!-- 腾讯广点通广告位 -->
-    {% if site.tencent_gdt_id and page.layout == 'post' %}
-    <div class="tencent-ad-container">
-        <div id="tencent-below-article-ad">
-            <!-- 腾讯广点通广告代码将在这里插入 -->
-            <script type="text/javascript">
-                // 腾讯广点通广告代码
-                (function() {
-                    var gdt = document.createElement('script');
-                    gdt.type = 'text/javascript';
-                    gdt.async = true;
-                    gdt.src = 'https://qzs.qq.com/qzone/biz/gdt/dmp/user-action-{{ site.tencent_gdt_id }}.js';
-                    var s = document.getElementsByTagName('script')[0];
-                    s.parentNode.insertBefore(gdt, s);
-                })();
-            </script>
-        </div>
+    <!-- AdSense 推荐内容广告位 -->
+    {% if site.google_adsense_id and page.layout == 'post' %}
+    <div class="ad-container recommendation-ad">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="{{ site.google_adsense_id }}"
+             data-ad-slot=""
+             data-ad-format="autorelaxed"
+             data-ad-type="adsense"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
     </div>
     {% endif %}
 

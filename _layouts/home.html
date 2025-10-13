@@ -10,6 +10,21 @@ layout: default
         <p class="hero-description">每日搜集并分析全球AI领域的重要新闻，涵盖技术突破、产业发展、政策动向和市场趋势</p>
     </div>
 
+    <!-- 首页顶部广告位 -->
+    {% if site.google_adsense_id %}
+    <div class="ad-container header-ad">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="{{ site.google_adsense_id }}"
+             data-ad-slot=""
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+    {% endif %}
+
     <!-- Articles Grid -->
     <div class="articles-section">
         <div class="articles-grid" id="articles-grid">
@@ -22,6 +37,21 @@ layout: default
         <div class="load-more-container" id="load-more-container">
             <button class="load-more-btn" id="load-more-btn">加载更多</button>
         </div>
+        
+        <!-- 首页中部广告位 -->
+        {% if site.google_adsense_id %}
+        <div class="ad-container recommendation-ad">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="{{ site.google_adsense_id }}"
+                 data-ad-slot=""
+                 data-ad-format="autorelaxed"
+                 data-ad-type="adsense"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+        {% endif %}
     </div>
 
     <!-- 隐藏的文章数据 -->

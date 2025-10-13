@@ -76,24 +76,39 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ site.google_adsense_id }}" crossorigin="anonymous"></script>
     {% endif %}
     
-    <!-- Taboola -->
-    {% if site.taboola_publisher_id %}
-    <script type="text/javascript">
-        window._taboola = window._taboola || [];
-        _taboola.push({article:'auto'});
-        !function (e, f, u, i) {
-            if (!document.getElementById(i)){
-                e.async = 1;
-                e.src = u;
-                e.id = i;
-                f.parentNode.insertBefore(e, f);
+    <!-- 百度联盟 -->
+    {% if site.baidu_union_id %}
+    <script>
+        (function() {
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            } else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
             }
-        }(document.createElement('script'),
-        document.getElementsByTagName('script')[0],
-        '//cdn.taboola.com/libtrc/{{ site.taboola_publisher_id }}/loader.js',
-        'tb_loader_script');
-        if(window.performance && typeof window.performance.mark == 'function')
-            {window.performance.mark('tbl_ic');}
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+    {% endif %}
+    
+    <!-- 腾讯广点通 -->
+    {% if site.tencent_gdt_id %}
+    <script>
+        (function(w, d, s, l, i) {
+            w[l] = w[l] || [];
+            w[l].push({
+                'gtm.start': new Date().getTime(),
+                event: 'gtm.js'
+            });
+            var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s),
+                dl = l != 'dataLayer' ? '&l=' + l : '';
+            j.async = true;
+            j.src = 'https://e.qq.com/ads/js/te.js?site_id={{ site.tencent_gdt_id }}';
+            f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer');
     </script>
     {% endif %}
     
@@ -257,19 +272,45 @@
     </div>
     {% endif %}
 
-    <!-- Taboola Widget -->
-    {% if site.taboola_publisher_id and page.layout == 'post' %}
-    <div class="taboola-container">
-        <div id="taboola-below-article-thumbnails"></div>
-        <script type="text/javascript">
-            window._taboola = window._taboola || [];
-            _taboola.push({
-                mode: 'thumbnails-a',
-                container: 'taboola-below-article-thumbnails',
-                placement: 'Below Article Thumbnails',
-                target_type: 'mix'
-            });
-        </script>
+    <!-- 百度联盟广告位 -->
+    {% if site.baidu_union_id and page.layout == 'post' %}
+    <div class="baidu-ad-container">
+        <div id="baidu-below-article-ad">
+            <!-- 百度联盟广告代码将在这里插入 -->
+            <script type="text/javascript">
+                // 百度联盟广告代码
+                (function() {
+                    var s = "_" + Math.random().toString(36).slice(2);
+                    document.write('<div id="' + s + '"></div>');
+                    (window.slotbydup=window.slotbydup || []).push({
+                        id: '{{ site.baidu_union_id }}',
+                        container: s,
+                        size: '728,90',
+                        display: 'inlay-fix'
+                    });
+                })();
+            </script>
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- 腾讯广点通广告位 -->
+    {% if site.tencent_gdt_id and page.layout == 'post' %}
+    <div class="tencent-ad-container">
+        <div id="tencent-below-article-ad">
+            <!-- 腾讯广点通广告代码将在这里插入 -->
+            <script type="text/javascript">
+                // 腾讯广点通广告代码
+                (function() {
+                    var gdt = document.createElement('script');
+                    gdt.type = 'text/javascript';
+                    gdt.async = true;
+                    gdt.src = 'https://qzs.qq.com/qzone/biz/gdt/dmp/user-action-{{ site.tencent_gdt_id }}.js';
+                    var s = document.getElementsByTagName('script')[0];
+                    s.parentNode.insertBefore(gdt, s);
+                })();
+            </script>
+        </div>
     </div>
     {% endif %}
 
